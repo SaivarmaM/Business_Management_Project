@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - echo Installing backend build dependencies...
+  build:
+    commands:
+      - echo Building backend with Maven...
+      - mvn -B clean package -DskipTests
+
+  post_build:
+    commands:
+      - echo Preparing CodeDeploy zip...
+      - mkdir -p deploy
+      - cp target/*.jar deploy/app.jar
+      - cp appspec.yml deploy/
+      - cp -r scripts deploy/
+      - cd deploy
+      - zip -r ../app-deployment.zip ./*
+artifacts:
+  files:
+    - app-deployment.zip
