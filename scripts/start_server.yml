@@ -1,0 +1,5 @@
+#!/bin/bash
+# (re)load systemd and start service
+systemctl daemon-reload || true
+systemctl enable backend || true
+systemctl start backend || true
